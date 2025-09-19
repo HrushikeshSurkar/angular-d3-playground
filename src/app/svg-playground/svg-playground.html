@@ -1,0 +1,128 @@
+<div
+  style="
+    border: 1px solid #ccc;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    overflow: auto;
+    padding: 10px;
+    background-color: #f9f9f9;
+  "
+>
+  <svg width="100%" height="300" viewBox="0 0 800 300" preserveAspectRatio="xMidYMid meet">
+    <!-- Definitions for arrowheads -->
+    <line id="arrowhead" x1="0" y1="0" x2="10" y2="10" marker-end="url(#arrowhead)"></line>
+
+    <!-- ROW 1 NODES -->
+    <g
+      *ngFor="let node of nodes.slice(0, 3); let i = index"
+      [attr.transform]="'translate(' + (100 + i * 200) + ', 50)'"
+      (click)="onNodeClick(node.id)"
+      style="cursor: pointer"
+    >
+      <rect
+        width="100"
+        height="60"
+        rx="10"
+        ry="10"
+        [attr.fill]="node.disabled ? '#cccccc' : ['#4CAF50', '#2196F3', '#FF9800'][i]"
+        stroke="#333"
+        stroke-width="2"
+      />
+      <foreignObject width="100" height="60" x="0" y="0" style="pointer-events: none">
+        <div
+          style="
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            pointer-events: none;
+          "
+          [innerHTML]="node.htmlContent"
+        ></div>
+      </foreignObject>
+    </g>
+
+    <!-- ROW 2 NODE -->
+    <g transform="translate(300, 200)" (click)="onNodeClick(nodes[3].id)" style="cursor: pointer">
+      <rect
+        width="100"
+        height="60"
+        rx="10"
+        ry="10"
+        [attr.fill]="nodes[3].disabled ? '#cccccc' : '#9C27B0'"
+        stroke="#333"
+        stroke-width="2"
+      />
+      <foreignObject width="100" height="60" x="0" y="0" style="pointer-events: none">
+        <div
+          style="
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            pointer-events: none;
+          "
+          [innerHTML]="nodes[3].htmlContent"
+        ></div>
+      </foreignObject>
+    </g>
+
+    <!-- STRAIGHT CONNECTIONS -->
+    <!-- Node 1 → Node 2 -->
+    <line
+      x1="200"
+      y1="80"
+      x2="300"
+      y2="80"
+      stroke="#333"
+      stroke-width="2"
+      marker-end="url(#arrowhead)"
+    />
+    <!-- Node 2 → Node 3 -->
+    <line
+      x1="400"
+      y1="80"
+      x2="500"
+      y2="80"
+      stroke="#333"
+      stroke-width="2"
+      marker-end="url(#arrowhead)"
+    />
+
+    <!-- FUNNEL CONNECTIONS TO NODE 4 -->
+    <!-- From Node 1 to Node 4 -->
+    <polyline
+      points="250,80 250,235 300,234"
+      stroke="#333"
+      stroke-width="2"
+      fill="none"
+      marker-end="url(#arrowhead)"
+    />
+    <!-- From Node 3 to Node 4 -->
+    <polyline
+      points="450,80 450,235 400,234"
+      stroke="#333"
+      stroke-width="2"
+      fill="none"
+      marker-end="url(#arrowhead)"
+    />
+  </svg>
+
+  <!-- Buttons to toggle node disable state -->
+  <div style="margin-top: 10px; text-align: center">
+    <button *ngFor="let node of nodes" (click)="toggleNodeDisable(node.id)" style="margin: 0 5px">
+      Toggle Node {{ node.id }} {{ node.disabled ? 'Enable' : 'Disable' }}
+    </button>
+  </div>
+</div>
